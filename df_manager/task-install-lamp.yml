@@ -1,0 +1,9 @@
+---
+- name: "Install lamp"
+  apt:
+    name: "apache2"
+    state: "present"
+
+- name: "Activer service apache2"
+  command:
+    service apache2 start

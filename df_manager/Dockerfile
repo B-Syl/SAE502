@@ -19,7 +19,8 @@ COPY --chown=${user}:${group} inventaire.ini /home/${user}/inventaire.ini
 COPY --chown=${user}:${group} rootpassword /home/${user}/rootpassword
 COPY --chown=${user}:${group} deploy-ct-lamp.yml /home/${user}/deploy-lamp.yml
 COPY --chown=${user}:${group} deploy-ct-docker.yml /home/${user}/roles/dockerhost/tasks/main.yml
-COPY --chown=${user}:${group} install-lamp.yml /home/${user}/roles/lamp/tasks/main.yml
+COPY --chown=${user}:${group} install-lamp.yml /home/${user}/install-lamp.yml
+COPY --chown=${user}:${group} task-install-lamp.yml /home/${user}/roles/lamp/tasks/main.yml
 #enfin "COPY <playbook> /home/${user}/<dest>" pour chaque playbooks et rôles
 USER ${user}
 RUN cd && virtualenv ansible

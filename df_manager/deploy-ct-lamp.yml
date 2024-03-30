@@ -1,5 +1,5 @@
 ---
-- name: "Deploiement docker lamp"
+- name: "Deploiement conteneur docker"
   hosts: dockerhost
   roles:
     - role: "dockerhost"
