@@ -1,0 +1,5 @@
+---
+- name: "Deploiement docker lamp"
+  hosts: dockerhost
+  roles:
+    - role: "dockerhost"

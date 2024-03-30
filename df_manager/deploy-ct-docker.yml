@@ -1,0 +1,14 @@
+---
+- name: "Deploiement lamp"
+  command:
+    docker run -dti --name CTsite --network net502 -p 80:80 --ip="192.168.52.2" img_ctsite /bin/bash
+
+- name: "Deploiement backup lamp"
+  command:
+    docker run -dti --name CTbackup --network net502 --ip="192.168.52.3" img_ctbackup /bin/bash
+
+- name: "Demarrer serveur SSH"
+  command: "docker exec -ti {{ item }} /bin/bash -c 'service ssh start'"
+  with_items:
+  - CTsite
+  - CTbackup
