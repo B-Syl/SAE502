@@ -5,3 +5,4 @@ docker build -t img_ctbackup df_backup
 docker run -dti --name CTmanager --network net502 --ip="192.168.52.1" img_ctmanager /bin/bash
 docker exec -ti CTmanager /bin/bash -c 'service ssh start'
 docker exec -ti CTmanager /bin/bash -c 'cat /root/tocat-hosts >> /etc/hosts'
+docker exec -ti CTmanager /bin/bash -u user-ansible -c 'cd && bash script-auto.sh'

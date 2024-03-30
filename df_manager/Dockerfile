@@ -15,6 +15,7 @@ RUN echo "192.168.52.254  Dockerhost" >> /root/tocat-hosts
 RUN echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
 RUN echo "    StrictHostKeyChecking no" >> /etc/ssh/ssh_config
 RUN pip install ansible
+COPY --chown=${user}:${group} script-auto.sh /home/${user}/script-auto.sh
 COPY --chown=${user}:${group} inventaire.ini /home/${user}/inventaire.ini
 COPY --chown=${user}:${group} rootpassword /home/${user}/rootpassword
 COPY --chown=${user}:${group} deploy-ct-lamp.yml /home/${user}/deploy-lamp.yml
