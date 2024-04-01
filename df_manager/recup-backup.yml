@@ -8,7 +8,7 @@
 
     - name: "Copy backup DB"
       synchronize:
-        src: /var/lib/sauvegardes/mysql
+        src: /var/lib/sauvegardes-mysql/mysql
         dest: /var/lib
         mode: pull
         private_key: /root/key-ansible
