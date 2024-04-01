@@ -1,9 +1,42 @@
 ---
-- name: "Install lamp"
+- name: "Installer PHP"
+  shell: |
+    export DEBIAN_FRONTEND=noninteractive
+    apt install -y php
+
+- name: "Installer LAMP"
   apt:
-    name: "apache2"
+    name: "apache2, mysql-server, php, libapache2-mod-php, php-mysql"
     state: "present"
 
-- name: "Activer service apache2"
-  command:
+- name: "Lancement playbook recup backup"
+  include_tasks: "recup-backup.yml"
+
+- name: "Recup config index apache2"
+  copy:
+    src: /root/dir.conf
+    dest: /etc/apache2/mods_enabled/dir.conf
+    remote_src: yes
+
+- name: "Recup config site apache2"
+  copy:
+    src: /root/site_db.conf
+    dest: /etc/apache2/sites-available/site_db.conf
+    remote_src: yes
+
+- name: "Stat documentroot site_db"
+  stat:
+    path: /var/www/site_db
+  register: site_db
+
+- name: "Recup Page PHP apache2"
+  copy:
+    src: /root/index.php
+    dest: /var/www/site_db/index.php
+    remote_src: yes
+  when: site_db.stat.exists and site_db.stat.isdir
+
+- name: "Activer service apache2 et mysql"
+  shell: |
     service apache2 start
+    service mysql start

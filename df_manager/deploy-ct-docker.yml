@@ -5,10 +5,18 @@
 
 - name: "Deploiement backup lamp"
   command:
-    docker run -dti --name CTbackup --network net502 --ip="192.168.52.3" img_ctbackup /bin/bash
+    docker run -dti --name CTbackup --network net502 --ip="192.168.52.3" -v /root/repo-git/volume-ctbackup:/var/lib/sauvegarde-mysql img_ctbackup /bin/bash
 
 - name: "Demarrer serveur SSH"
   command: "docker exec -ti {{ item }} /bin/bash -c 'service ssh start'"
   with_items:
   - CTsite
   - CTbackup
+
+- name: "Copier cle SSH site -> backup"
+  command:
+    docker exec -ti CTsite /bin/bash -c 'sshpass -f /root/rootpassword ssh-copy-id -i /root/key-ansible root@192.168.52.3'
+
+- name: "Copier cle SSH backup -> site"
+  command:
+    docker exec -ti CTbackup /bin/bash -c 'sshpass -f /root/rootpassword ssh-copy-id -i /root/key-ansible root@192.168.52.2'

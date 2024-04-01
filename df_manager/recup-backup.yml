@@ -1,0 +1,16 @@
+---
+- hosts: backup
+  tasks:
+    - name: "Etat backup"
+      stat:
+        path: /var/lib/sauvegardes
+      register: dir_backup
+
+    - name: "Copy backup DB"
+      synchronize:
+        src: /var/lib/sauvegardes/mysql
+        dest: /var/lib
+        mode: pull
+        private_key: /root/key-ansible
+      delegate_to: site
+      when: dir_backup.stat.exists and dir_backup.stat.isdir
