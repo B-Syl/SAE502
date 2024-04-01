@@ -1,8 +1,8 @@
 <?php
 $user = "db_user";
 $password = "password";
-$database = "db502";
-$table = "mytab";
+$database = "db_site_test";
+$table = "COLTEST";
 
 try {
   $db = new PDO("mysql:host=127.0.0.1;dbname=$database", $user, $password);
