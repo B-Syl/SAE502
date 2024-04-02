@@ -3,7 +3,7 @@
   tasks:
     - name: "Etat backup"
       stat:
-        path: /var/lib/sauvegardes
+        path: /var/lib/sauvegardes_mysql/mysql
       register: dir_backup
 
     - name: "Copy backup DB"

@@ -5,7 +5,7 @@
 
 - name: "Deploiement backup lamp"
   command:
-    docker run -dti --name CTbackup --network net502 --ip="192.168.52.3" -v /root/repo-git/volume-ctbackup:/var/lib/sauvegarde-mysql img_ctbackup /bin/bash
+    docker run -dti --name CTbackup --network net502 --ip="192.168.52.3" -v /root/repo-git/volume_ctbackup:/var/lib/sauvegarde_mysql img_ctbackup /bin/bash
 
 - name: "Demarrer serveur SSH"
   command: "docker exec -ti {{ item }} /bin/bash -c 'service ssh start'"
