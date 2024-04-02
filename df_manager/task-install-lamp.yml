@@ -40,3 +40,9 @@
   shell: |
     service apache2 start
     service mysql start
+
+- name: "Activer site apache2"
+  shell: |
+    a2dissite 000-default
+    a2ensite site_db
+    service apache2 reload
