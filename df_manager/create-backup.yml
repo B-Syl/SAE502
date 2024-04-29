@@ -8,8 +8,9 @@
 
     - name: "Copy backup DB"
       synchronize:
-        src: /var/lib/sauvegardes_mysql/mysql
-        dest: /var/lib
+        src: /var/lib/mysql
+        dest: /var/lib/sauvegardes_mysql
+        mode: pull
         private_key: /root/key-ansible
       delegate_to: backup
       when: dir_mysql.stat.exists and dir_mysql.stat.isdir
