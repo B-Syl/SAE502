@@ -20,5 +20,14 @@ echo "docker exec -u user-ansible -ti CTmanager /bin/bash -c 'cd && bash script-
 echo "Contenu script-auto.sh :"
 cat df_manager/script-auto.sh | head -n 2
 read -p "pause"
+echo "deploy-lamp.yml => rôle dockerhost"
+echo "rôle dockerhost :"
+cat df_manager/deploy-ct-docker.yml
+read -p "pause"
+echo "suite script-auto.sh"
+cat df_manager/script-auto.sh | head -n 4 | tail -n 2
+read -p "pause"
+cat df_manager/script-auto.sh | tail -n 2 | head -n 1
+read -p "pause"
 
 docker exec -u user-ansible -ti CTmanager /bin/bash -c 'cd && bash script-auto.sh'
