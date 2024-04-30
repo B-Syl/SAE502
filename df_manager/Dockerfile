@@ -8,7 +8,7 @@ RUN echo 'root:R00tR00t502' | chpasswd
 RUN groupadd -g ${gid} ${group}
 RUN useradd -u ${uid} -g ${group} -s /bin/bash -m ${user}
 RUN apt update
-RUN apt install -y nano net-tools iputils-ping python3-virtualenv openssh-server sshpass tree
+RUN apt install -y nano net-tools iputils-ping python3-virtualenv openssh-server sshpass tree cron
 RUN echo "192.168.52.2    CTsite" >> /root/tocat-hosts
 RUN echo "192.168.52.3    CTbackup" >> /root/tocat-hosts
 RUN echo "192.168.52.254  Dockerhost" >> /root/tocat-hosts
@@ -24,12 +24,14 @@ COPY --chown=${user}:${group} install-lamp.yml /home/${user}/install-lamp.yml
 COPY --chown=${user}:${group} task-install-lamp.yml /home/${user}/roles/lamp/tasks/main.yml
 COPY --chown=${user}:${group} recup-backup.yml /home/${user}/recup-backup.yml
 COPY --chown=${user}:${group} create-backup.yml /home/${user}/create-backup.yml
-#enfin "COPY <playbook> /home/${user}/<dest>" pour chaque playbooks et rôles
+COPY --chown=${user}:${group} cron-backup /home/${user}/cron-backup
 USER ${user}
 RUN cd && virtualenv ansible
 RUN mkdir /home/${user}/.ssh
 RUN ssh-keygen -f /home/${user}/ansible-man-key -q -N ""
 RUN sshpass -f /home/${user}/rootpassword ssh-copy-id -i /home/${user}/ansible-man-key.pub root@192.168.52.254
+RUN crontab /home/user-ansible/cron-backup
 USER root
+CMD /usr/sbin/cron start
 
 EXPOSE 22
