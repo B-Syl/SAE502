@@ -1,36 +1,44 @@
 ---
+# Tache d'installation de PHP
 - name: "Installer PHP"
   shell: |
-    export DEBIAN_FRONTEND=noninteractive
+    export DEBIAN_FRONTEND=noninteractive  # Evite le besoin d'une action manuelle pour entrer la region et le pays lors de l'install de php
     apt install -y php
 
+# Tache install reste LAMP avec le module apt
 - name: "Installer LAMP"
   apt:
-    name: "apache2, mysql-server, php, libapache2-mod-php, php-mysql"
+    name: "apache2, mysql-server, libapache2-mod-php, php-mysql"
     state: "present"
 
+# Utilisation du module copy pour copier un fichier entre une source et une destination sur une meme machine
+# recuperation du fichier dir.conf qui permet de determiner la priorite entre les index.html et index.php
 - name: "Recup config index apache2"
   copy:
     src: /root/dir.conf
     dest: /etc/apache2/mods-enabled/dir.conf
     remote_src: yes
 
+# Recuperation de la config du site apache2
 - name: "Recup config site apache2"
   copy:
     src: /root/site_db.conf
     dest: /etc/apache2/sites-available/site_db.conf
     remote_src: yes
 
+# Verification repertoire site_db
 - name: "Stat documentroot site_db"
   stat:
     path: /var/www/site_db
   register: site_db
 
+# Si site_db n'existe pas, alors creation du repertoire
 - name: "Creation repertoire"
   command:
     mkdir /var/www/site_db
   when: not site_db.stat.exists
 
+# Recuperation de la page PHP pointant vers la base de donnees
 - name: "Recup Page PHP apache2"
   copy:
     src: /root/index.php
@@ -41,12 +49,14 @@
   command:
     service apache2 start
 
+# Desactivation du site par defaut de apache2 puis activation du site site_db puis rechargement apache2
 - name: "Activer site apache2"
   shell: |
     a2dissite 000-default
     a2ensite site_db
     service apache2 reload
 
+# Activation du service mysql pour l'acces a la bdd
 - name: "Activer service mysql"
   command:
     service mysql start

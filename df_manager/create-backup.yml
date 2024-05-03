@@ -1,4 +1,5 @@
 ---
+# Meme fonctionnement que recup-backup.yml mais en inversant la source et la destination
 - hosts: site
   tasks:
     - name: "Etat backup"

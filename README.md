@@ -2,6 +2,8 @@ Déploiement projet requiert docker et docker builder
 
 Déploiement du projet :
 
+AVANT TOUT : MODIFIER LE CHEMIN DU VOLUME COTE HOTE SUR LE FICHIER df_manager/deploy-ct-docker.yml (l.8)
+
 LINUX : 
   - Lancer le script "scriptdeploiement-linux.sh" avec la commande bash
     - root@machine:~/repo-git# bash scriptdeploiement-linux.sh

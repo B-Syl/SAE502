@@ -1,4 +1,5 @@
 ---
+# Appel du playbook permettant de mettre en place tout le site + la bdd
 - name: "Deploiement LAMP"
   hosts: site
   roles:

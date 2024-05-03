@@ -1,4 +1,5 @@
 ---
+# Fait appel au fichier df_manager/deploy-ct-docker.yml et l'execute sur la machine mere
 - name: "Deploiement conteneur docker"
   hosts: dockerhost
   roles:

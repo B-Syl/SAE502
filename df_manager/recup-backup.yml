@@ -1,16 +1,21 @@
 ---
 - hosts: backup
   tasks:
+    # La tache fait un etat de ce qu'il se trouve dans /var/lib/sauvegardes_mysql/mysql sur CTbackup
     - name: "Etat backup"
       stat:
         path: /var/lib/sauvegardes_mysql/mysql
-      register: dir_backup
-
+      register: dir_backup    # marque l'action stat avec le nom dir_backup
+    # La tache suivante verifie si /var/lib/sauvegardes_mysql/mysql existe et est un repertoire
+    # Avant de lancer un transfert du repertoire mysql vers le /var/lib de CTsite avec rsync
     - name: "Copy backup DB"
       synchronize:
-        src: /var/lib/sauvegardes_mysql/mysql
-        dest: /var/lib
+        src: /var/lib/sauvegardes_mysql/mysql    # chemin source CTbackup, determine par hosts plus haut
+        dest: /var/lib    # chemin destination CTsite, determiné par delegate_to
         mode: pull
-        private_key: /root/key-ansible
-      delegate_to: site
+        private_key: /root/key-ansible #cle copiee entre les hotes precedemment
+      delegate_to: site  # Avec l'action synchronize, delegate_to determine la machine de destination
       when: dir_backup.stat.exists and dir_backup.stat.isdir
+      # La tache ne s'execute que si la marque dir_backup retourne true sur stat.exists ET stat.isdir
+      # stat.exists => est ce que le chemin existe ?
+      # stat.isdir => est ce que le chemin est un repertoire ?

@@ -1,4 +1,5 @@
 ---
+# Les deux premieres taches vont creer et lancer les conteneur CTsite et CTbackup
 - name: "Deploiement lamp"
   command:
     docker run -dti --name CTsite --network net502 -p 80:80 --ip="192.168.52.2" img_ctsite /bin/bash
@@ -6,19 +7,20 @@
 - name: "Deploiement backup lamp"
   command:
     docker run -dti --name CTbackup --network net502 --ip="192.168.52.3" -v /root/repo-git/volume_ctbackup:/var/lib/sauvegardes_mysql img_ctbackup /bin/bash
-
+                                                                          # /!\ Volume a pointer sur le bon repertoire hote
+# Lancement du serveur SSH sur les deux machines en une tache
 - name: "Demarrer serveur SSH"
   command: "docker exec -ti {{ item }} /bin/bash -c 'service ssh start'"
   with_items:
   - CTsite
   - CTbackup
-
+# Creation du repertoire .ssh sur les deux machines pour la copie des clees
 - name: "Creer repertoire .ssh"
   command: "docker exec -ti {{ item }} /bin/bash -c 'mkdir /root/.ssh'"
   with_items:
   - CTsite
   - CTbackup
-
+# Copie des clee entre les deux hotes, utilisation de sshpass pour l'automatisation
 - name: "Copier cle SSH site -> backup"
   command:
     docker exec -ti CTsite /bin/bash -c 'sshpass -f /root/rootpassword ssh-copy-id -i /root/key-ansible root@192.168.52.3'
