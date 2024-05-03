@@ -1,1 +1,4 @@
+# Ce fichier est un fichier de référence cron qui est copié dans le crontab de l'utilisateur user-ansible lors de la création de l'image de CTmanager
+# Une fois ajouté dans cron, la commande ci-dessous est exécuté toutes les 30 minutes
+# La commande python3 vers le programme de playbook à la place de ansible-playbook est dû au fait que cron ne trouve pas la commande ansible-playbook (vu après un débug)
 0-30 * * * * python3 /usr/local/lib/python3.10/dist-packages/ansible/cli/playbook.py -i /home/user-ansible/inventaire.ini --user root --private-key /home/user-ansible/ansible-man-key /home/user-ansible/create-backup.yml

@@ -1,3 +1,4 @@
+# Configuration de l'image presque identique à CTsite sans copie de fichier et sans ouverture de port
 FROM ubuntu
 
 RUN echo 'root:R00tR00t502' | chpasswd
